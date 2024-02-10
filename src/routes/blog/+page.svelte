@@ -10,7 +10,7 @@
     <ul>
         {#each data.posts as post}
             <li>
-                <a href={`blog/${post.slug}`}>{post.title}</a>
+                <a href={`blog/${post.id}`}>{post.title}</a>
             </li>
         {/each}
     </ul>
