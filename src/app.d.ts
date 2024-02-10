@@ -10,7 +10,6 @@ declare global {
       authCheck(): Promise<{   conditional: true;   user: { user: User; } | {     user: null;   };   userError: AuthError | null;   returnError: () => void; }>
     }
     interface PageData {
-      session: Session | null
       flash?: { type: 'success' | 'error'; message: string };
     }
     // interface Error {}
