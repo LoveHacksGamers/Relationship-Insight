@@ -19,5 +19,5 @@
       </svelte:fragment>
     </AppBar>
   </svelte:fragment>
-  <slot />
+  <slot/>
 </AppShell>
