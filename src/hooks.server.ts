@@ -2,6 +2,7 @@
 import { PUBLIC_SUPABASE_URL, PUBLIC_ANON_KEY } from '$env/static/public'
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit'
 import type { Handle } from '@sveltejs/kit'
+import {error} from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
   event.locals.supabase = createSupabaseServerClient({
@@ -18,6 +19,19 @@ export const handle: Handle = async ({ event, resolve }) => {
       data: { session },
     } = await event.locals.supabase.auth.getSession()
     return session
+  }
+
+  event.locals.authCheck = async () => {
+    const { data : user, error: userError } = await event.locals.supabase.auth.getUser();
+    return {
+      conditional: !!user,
+      user,
+      userError,
+      returnError: () => {
+        if (userError) { throw error(500, userError.message); }
+        if (!user) { throw error(401, 'Not Logged In'); }
+      }
+    }
   }
 
   return resolve(event, {
