@@ -17,3 +17,7 @@ export const PostSchema = zod.object({
   body: zod.string(),
   title: zod.string(),
 });
+
+export const CommentSchema = zod.object({
+  body: zod.string(),
+});

@@ -1,8 +1,13 @@
 import type { PageServerLoad } from './$types';
+import type {Actions} from "@sveltejs/kit";
+import {CommentSchema} from "$lib/validate";
+import {superValidate} from "sveltekit-superforms/server";
+
 
 export const load = (async ({ locals: { supabase, authCheck }, params }) => {
 	const { conditional, returnError, user } = await authCheck();
 	if (!conditional) return returnError();
+	const form = await superValidate(CommentSchema);
 	const { data: posts, error: postErrors } = await supabase
 		.from('blog')
 		.select('*, vote(id)')
@@ -27,5 +32,17 @@ export const load = (async ({ locals: { supabase, authCheck }, params }) => {
 	if (votesErrors) return { error: votesErrors.message };
 	const vote = votes.length;
 
-	return { post, comments, vote, user_id: user.user?.id };
+	return { post, comments, vote, user_id: user.user?.id, form };
 }) satisfies PageServerLoad;
+
+export const actions : Actions = {
+	default: async ({ locals: { supabase, authCheck }, params, request }) => {
+		const { conditional, returnError, user } = await authCheck();
+		if (!conditional) return returnError();
+
+		const form = await request.json();
+		const { body } = form;
+		const {error } = await supabase.from('comment').insert({ body, user_id: user.user?.id, blog_id: params.id });
+		if (error) return { error: error.message };
+	}
+};

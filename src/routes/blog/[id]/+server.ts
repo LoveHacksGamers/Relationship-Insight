@@ -19,3 +19,5 @@ export const POST: RequestHandler = async ({locals: {supabase, authCheck}, param
     return text("Voted");
   }
 }
+
+
