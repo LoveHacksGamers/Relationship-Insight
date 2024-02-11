@@ -28,13 +28,13 @@
       Display Name:
       <input
           type="text"
-          name="Name"
+          name="username"
           class="input p-1"
           placeholder="Display Name"
-          aria-invalid={$errors.displayName ? 'true' : undefined}
-          bind:value={$form.displayName}
-          {...$constraints.displayName} />
-      {#if $errors.displayName}<span class="invalid">{$errors.displayName}</span>{/if}
+          aria-invalid={$errors.username ? 'true' : undefined}
+          bind:value={$form.username}
+          {...$constraints.username} />
+      {#if $errors.username}<span class="invalid">{$errors.username}</span>{/if}
     </label>
     <label class="py-2">
       Password:
@@ -46,35 +46,35 @@
     </label>
     <label class="py-2">
       Confirm password:
-      <input type="password" name="confirm password" class="input p-1" placeholder="confirm password"
-             aria-invalid={$errors.passwordConfirmation ? 'true' : undefined}
-             bind:value={$form.passwordConfirmation}
-             {...$constraints.passwordConfirmation} />
-      {#if $errors.passwordConfirmation}<span class="invalid">{$errors.passwordConfirmation}</span>{/if}
+      <input type="password" name="confirm" class="input p-1" placeholder="confirm password"
+             aria-invalid={$errors.confirm ? 'true' : undefined}
+             bind:value={$form.confirm}
+             {...$constraints.confirm} />
+      {#if $errors.confirm}<span class="invalid">{$errors.confirm}</span>{/if}
     </label>
     <label class="py-2">
       Date Of Birth:
       <input
           type="date"
-          name="DOB"
+          name="dob"
           class="input p-1"
           placeholder="YYYY-MM-DD"
-          aria-invalid={$errors.DOB ? 'true' : undefined}
-          bind:value={$form.DOB}
-          {...$constraints.DOB} />
-      {#if $errors.DOB}<span class="invalid">{$errors.DOB}</span>{/if}
+          aria-invalid={$errors.dob ? 'true' : undefined}
+          bind:value={$form.dob}
+          {...$constraints.dob} />
+      {#if $errors.dob}<span class="invalid">{$errors.dob}</span>{/if}
     </label>
     <label class="py-2">
       Gender
       <input
           type="text"
-          name="Gender"
+          name="gender"
           class="input p-1"
-          placeholder="Male/Female/Other/Furry"
-          aria-invalid={$errors.Gender ? 'true' : undefined}
-          bind:value={$form.Gender}
-          {...$constraints.Gender} />
-      {#if $errors.Gender}<span class="invalid">{$errors.Gender}</span>{/if}
+          placeholder="0 - 5"
+          aria-invalid={$errors.gender ? 'true' : undefined}
+          bind:value={$form.gender}
+          {...$constraints.gender} />
+      {#if $errors.gender}<span class="invalid">{$errors.gender}</span>{/if}
     </label>
     <button type="submit" class="btn variant-filled-primary">Sign up</button>
   </form>

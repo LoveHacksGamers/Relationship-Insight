@@ -7,8 +7,8 @@ export const LoginSchema = zod.object({
 export const signupSchema = zod.object({
   email: zod.string().email(),
   password: zod.string().min(8),
-  passwordConfirmation: zod.string().min(8),
-  DOB: zod.date().max(new Date()),
-  Gender: zod.string(),
-  displayName: zod.string().min(2),
-});
+  confirm: zod.string().min(8),
+  dob: zod.date().max(new Date()),
+  gender: zod.number().min(1).max(5),
+  username: zod.string().min(2),
+}).refine((data) => data.password === data.confirm, "Passwords didn't match.");

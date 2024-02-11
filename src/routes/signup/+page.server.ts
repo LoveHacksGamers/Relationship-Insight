@@ -1,5 +1,5 @@
 import type {Actions, PageServerLoad} from './$types';
-import {superValidate} from "sveltekit-superforms/server";
+import {setError, superValidate} from "sveltekit-superforms/server";
 import { signupSchema } from "$lib/validate"
 import {fail} from "@sveltejs/kit";
 
@@ -10,18 +10,31 @@ export const load : PageServerLoad = (async () => {
 });
 
 export const actions : Actions = {
-  default: async ({request, fetch}) => {
+  default: async ({request, locals : { supabase }}) => {
     const form = await superValidate(request, signupSchema);
     if (!form.valid) return fail(400, {form});
 
-    const {email, password} = form.data;
+    console.log(form.errors)
 
-    await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email, password})
+    const {email, dob, username, gender, password} = form.data;
+
+    const {data : user, error : userError } = await supabase.auth.signUp({
+      email,
+      password,
     });
+    if (userError) return setError(form, userError.message);
 
-    return {form};
+    const {error : profileError} = await supabase
+      .from('profile')
+      .insert({
+        user_id: user?.user?.id,
+        username,
+        date_of_birth: dob,
+        gender,
+      });
+    if (profileError) return setError(form, profileError.message);
+
+
+    return {form };
   }
 }
