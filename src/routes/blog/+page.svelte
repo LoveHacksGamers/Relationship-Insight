@@ -23,12 +23,14 @@
 <main class="max-w-2xl mx-auto p-4 vaiant-filled-secondary"> <!-- Use a light pink color -->
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl text-gray-700">Blog Posts</h1>
-    
-        <a href="/blog/createPost" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Create post
-        </a>
+        <div class="flex justify-between items-center mb-4">
+            <a href="/blog/createPost" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Create post
+            </a>
+        </div>
     </div>
-    
+
+
     <!-- Separate container for blog posts with a white background -->
     <div class="bg-white p-4 rounded">
         <ul class="list-none p-0">
@@ -45,25 +47,10 @@
                                 <span class="ml-1">{post.vote.length}</span>
                             </button>
                             <span>Published on {new Date(post.created_at).toLocaleDateString()}</span>
-                        </div>
                     </div>
+                </div>
                 </li>
             {/each}
         </ul>
     </div>
 </main>
-
-<style>
-    .skeleton {
-        height: 20px; /* Adjust the height as needed */
-        background: linear-gradient(90deg, #fce7f3 25%, #f9c5db 50%, #fce7f3 75%); /* Light pink gradient */
-        background-size: 200% 100%;
-        animation: skeleton-loading 1.5s infinite;
-    }
-
-    @keyframes skeleton-loading {
-        to {
-            background-position: -200% 0;
-        }
-    }
-</style>

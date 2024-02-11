@@ -12,3 +12,8 @@ export const signupSchema = zod.object({
   gender: zod.number().min(1).max(5),
   username: zod.string().min(2),
 }).refine((data) => data.password === data.confirm, "Passwords didn't match.");
+
+export const PostSchema = zod.object({
+  postDiscription: zod.string(),
+  postTitle: zod.string(),
+});
