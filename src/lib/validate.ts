@@ -12,3 +12,8 @@ export const signupSchema = zod.object({
   Gender: zod.string(),
   displayName: zod.string().min(2),
 });
+
+export const PostSchema = zod.object({
+  postDiscription: zod.string(),
+  postTitle: zod.string(),
+});
