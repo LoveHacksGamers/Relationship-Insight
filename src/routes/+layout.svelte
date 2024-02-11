@@ -1,12 +1,27 @@
 <script lang="ts">
 	import '../app.pcss';
   import type { LayoutData} from "./$types";
-  import {AppBar, AppShell, initializeStores, Toast} from "@skeletonlabs/skeleton";
+  import {AppBar, AppShell, getToastStore, initializeStores, Toast} from "@skeletonlabs/skeleton";
+  import { getFlash } from 'sveltekit-flash-message';
+  import { page } from '$app/stores';
+
+  const flash = getFlash(page);
 
   initializeStores();
 
+  const toastStore = getToastStore();
+
+  $: if ($flash) {
+    toastStore.trigger({
+      message: $flash.message,
+      background: $flash.type === 'success' ? 'variant-filled-success' : 'variant-filled-error',
+    })
+  }
+
   export let data : LayoutData;
+  data.session = data.supabase.auth.getSession();
 </script>
+
 <Toast />
 <AppShell>
   <svelte:fragment slot="header">

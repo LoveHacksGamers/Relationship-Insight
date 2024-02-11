@@ -4,14 +4,19 @@ import { signupSchema } from "$lib/validate"
 import {fail} from "@sveltejs/kit";
 import { redirect } from 'sveltekit-flash-message/server';
 
-export const load : PageServerLoad = (async () => {
+export const load : PageServerLoad = (async ({locals : {supabase}}) => {
   const form = await superValidate(signupSchema);
 
-  return { form };
+  const { data: genders, error: genderError } = await supabase.from('gender').select('*');
+  if (genderError) {
+    return { error: genderError.message };
+  }
+
+  return { form, genders };
 });
 
 export const actions : Actions = {
-  default: async ({request, locals : { supabase }}) => {
+  default: async ({request, cookies, locals : { supabase }}) => {
     const form = await superValidate(request, signupSchema);
     if (!form.valid) return fail(400, {form});
 
@@ -35,8 +40,15 @@ export const actions : Actions = {
       });
     if (profileError) return setError(form, profileError.message);
 
-    throw redirect(307, '/');
 
-    return {form };
+    throw redirect(
+      "/",
+      {
+        type: "success",
+        message: "Account Created Successfully! Please check your email to verify your account."
+      }, cookies
+    );
+
+    return { form };
   }
 }

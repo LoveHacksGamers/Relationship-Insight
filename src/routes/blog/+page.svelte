@@ -1,6 +1,3 @@
-<!-- Install Skeleton CSS: https://github.com/dhg/Skeleton/releases -->
-<link rel="stylesheet" href="path/to/skeleton.css">
-
 <script lang="ts">
     import { onMount } from 'svelte';
     import type { PageData } from './$types';

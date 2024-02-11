@@ -5,11 +5,11 @@
   export let data: PageData;
 
   // Client API:
-  const { form, constraints, errors } = superForm(data.form);
+  const { form, constraints, errors, enhance } = superForm(data.form);
 </script>
 
 
-<main class="center">
+<main class="center" use:enhance>
   <form class="flex flex-col card p-3" method="POST">
     <h1>Sign Up</h1>
     <label class="py-2">
@@ -66,14 +66,11 @@
     </label>
     <label class="py-2">
       Gender
-      <input
-          type="text"
-          name="gender"
-          class="input p-1"
-          placeholder="0 - 5"
-          aria-invalid={$errors.gender ? 'true' : undefined}
-          bind:value={$form.gender}
-          {...$constraints.gender} />
+      <select class="select" name="gender">
+        {#each data.genders as gender}
+          <option value={gender.id}>{gender.gender}</option>
+        {/each}
+      </select>
       {#if $errors.gender}<span class="invalid">{$errors.gender}</span>{/if}
     </label>
     <button type="submit" class="btn variant-filled-primary">Sign up</button>
