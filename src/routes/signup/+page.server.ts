@@ -2,6 +2,7 @@ import type {Actions, PageServerLoad} from './$types';
 import {setError, superValidate} from "sveltekit-superforms/server";
 import { signupSchema } from "$lib/validate"
 import {fail} from "@sveltejs/kit";
+import { redirect } from 'sveltekit-flash-message/server';
 
 export const load : PageServerLoad = (async () => {
   const form = await superValidate(signupSchema);
@@ -34,6 +35,7 @@ export const actions : Actions = {
       });
     if (profileError) return setError(form, profileError.message);
 
+    throw redirect(307, '/');
 
     return {form };
   }
