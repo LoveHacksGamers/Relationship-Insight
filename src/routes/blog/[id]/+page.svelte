@@ -8,6 +8,7 @@
 
 
 <main>
+    <div class="flex items-center justify-center mt-4 flex-col">
     <h1>{data.vote} {data.post.title}</h1>
     {#if data.session}
         <form method="post" use:enhance>
@@ -16,7 +17,8 @@
         </form>
     {/if}
     {#each data.comments as comment}
-        <li>{comment.body}</li>
+        <p>{comment.body}</p>
     {/each}
+    </div>
 </main>
 
