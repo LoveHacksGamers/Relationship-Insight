@@ -1,40 +1,36 @@
 <!-- CreatePost.svelte -->
 <script lang="ts">
     import { goto } from '$app/navigation';
-    import type { PageData } from './types'; // Adjust the path accordingly
+    import type { BlogPost } from './types';
 
     let newPostTitle = '';
     let newPostDescription = '';
 
     const submitPost = () => {
-        // Perform logic to submit the post with newPostTitle and newPostDescription
-        console.log('Submitted post:', { title: newPostTitle, description: newPostDescription });
-
-        // After submitting, you may want to navigate back to the main page or perform other actions
-        // For example, navigate back to the main page:
-        goto('/');
+        // Navigate back to the blog page
+        goto('/blog');
     };
 
     const navigateBackToBlog = () => {
-        goto('/');
+        goto('/blog');
     };
 </script>
 
-<main class="max-w-2xl mx-auto p-4">
+<main class="max-w-3xl mx-auto p-8 bg-pink-100 rounded"> <!-- Use a light hue of pink with increased padding and rounding -->
     <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl text-gray-700">Create Post</h1>
-        <button on:click={navigateBackToBlog} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <h1 class="text-2xl text-gray-800">Create Post</h1>
+        <button on:click={navigateBackToBlog} class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
             Back to Blog
         </button>
     </div>
-    <form on:submit|preventDefault={submitPost}>
-        <label for="postTitle" class="block text-sm font-medium text-gray-600">Title</label>
-        <input type="text" id="postTitle" bind:value={newPostTitle} class="mt-1 p-2 border rounded focus:outline-none focus:ring focus:border-blue-300 w-full" />
+    <form on:submit|preventDefault={submitPost} class="bg-white p-8 rounded shadow-md">
+        <label for="postTitle" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+        <input type="text" id="postTitle" bind:value={newPostTitle} class="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300" />
 
-        <label for="postDescription" class="block mt-4 text-sm font-medium text-gray-600">Description</label>
-        <textarea id="postDescription" bind:value={newPostDescription} class="mt-1 p-2 border rounded focus:outline-none focus:ring focus:border-blue-300 w-full" rows="4"></textarea>
+        <label for="postDescription" class="block mt-4 text-sm font-medium text-gray-700 mb-2">Description</label>
+        <textarea id="postDescription" bind:value={newPostDescription} class="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300" rows="4"></textarea>
 
-        <button type="submit" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        <button type="submit" class="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
             Submit Post
         </button>
     </form>
