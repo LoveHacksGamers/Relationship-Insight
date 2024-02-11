@@ -7,7 +7,7 @@ declare global {
     interface Locals {
       supabase: SupabaseClient;
       getSession(): Promise<Session | null>;
-      authCheck(): Promise<{   conditional: true;   user: { user: User; } | {     user: null;   };   userError: AuthError | null;   returnError: () => void; }>
+      authCheck(): Promise<{   conditional: boolean;   user: {     user: User;   } | {     user: null;   };   userError: AuthError | null;   returnError: () => void; }>
     }
     interface PageData {
       flash?: { type: 'success' | 'error'; message: string };

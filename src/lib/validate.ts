@@ -14,6 +14,6 @@ export const signupSchema = zod.object({
 }).refine((data) => data.password === data.confirm, "Passwords didn't match.");
 
 export const PostSchema = zod.object({
-  postDiscription: zod.string(),
-  postTitle: zod.string(),
+  body: zod.string(),
+  title: zod.string(),
 });

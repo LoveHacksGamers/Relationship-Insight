@@ -9,8 +9,8 @@
 </script>
 
 
-<main class="center" use:enhance>
-  <form class="flex flex-col card p-3" method="POST">
+<main class="center" >
+  <form class="flex flex-col card p-3" method="POST" use:enhance>
     <h1>Sign Up</h1>
     <label class="py-2">
       Email:

@@ -2,6 +2,7 @@ import type {Actions, PageServerLoad} from './$types';
 import {superValidate} from "sveltekit-superforms/server";
 import { LoginSchema } from "$lib/validate"
 import {fail} from "@sveltejs/kit";
+import {redirect} from "sveltekit-flash-message/server";
 
 export const load : PageServerLoad = (async () => {
   const form = await superValidate(LoginSchema);
@@ -10,18 +11,29 @@ export const load : PageServerLoad = (async () => {
 });
 
 export const actions : Actions = {
-  default: async ({request, fetch}) => {
+  default: async ({request, locals : {supabase}, cookies}) => {
     const form = await superValidate(request, LoginSchema);
     if (!form.valid) return fail(400, {form});
 
     const {email, password} = form.data;
 
-    await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email, password})
+    const {data : user, error : userError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
+    console.log(userError, user)
+    if (userError) return {form, error: userError.message}
 
-    return {form};
+
+    throw redirect(
+      "/",
+      {
+        type: "success",
+        message: "Logged in Successfully!"
+      },
+      cookies
+    )
+
+    return {form, session : user?.session};
   }
 }

@@ -23,8 +23,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   event.locals.authCheck = async () => {
     const { data : user, error: userError } = await event.locals.supabase.auth.getUser();
+
     return {
-      conditional: !!user,
+      conditional: !!user.user,
       user,
       userError,
       returnError: () => {
