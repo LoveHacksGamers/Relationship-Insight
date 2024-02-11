@@ -4,7 +4,6 @@
     export let data: PageData;
 
     let upvotedPosts = new Set<number>();
-    let upvoteCounts: { [key: number]: number } = {};
 
     const upvote = async (postId: number) => {
         if (data.user_id) {
@@ -26,11 +25,12 @@
         </div>
     </div>
 
-
     <!-- Separate container for blog posts with a white background -->
     <div class="bg-white p-4 rounded">
         <ul class="list-none p-0">
+            {data.posts}
             {#each data.posts as post (post.id)}
+                {post}
                 <li class="mb-4">
                     <div class="border p-4 rounded">
                         <h2 class="text-xl font-bold mb-2">

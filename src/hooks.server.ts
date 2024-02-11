@@ -22,18 +22,20 @@ export const handle: Handle = async ({ event, resolve }) => {
   }
 
   event.locals.authCheck = async () => {
-    const { data : user, error: userError } = await event.locals.supabase.auth.getUser();
-
+    const {
+      data: { session },
+      error: sessionError
+    } = await event.locals.supabase.auth.getSession();
     return {
-      conditional: !!user.user,
-      user,
-      userError,
+      sessionError,
+      session,
+      conditional: session === null || sessionError !== null,
       returnError: () => {
-        if (userError) { throw error(500, userError.message); }
-        if (!user) { throw error(401, 'Not Logged In'); }
+        if (sessionError) throw error(500, sessionError.message);
+        if (session === null) throw error(401, 'Not logged in');
       }
-    }
-  }
+    };
+  };
 
   return resolve(event, {
     filterSerializedResponseHeaders(name) {

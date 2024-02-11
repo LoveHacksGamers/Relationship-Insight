@@ -19,7 +19,6 @@
   }
 
   export let data : LayoutData;
-  data.session = data.supabase.auth.getSession();
 </script>
 
 <Toast />
