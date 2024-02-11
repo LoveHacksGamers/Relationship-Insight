@@ -5,7 +5,7 @@ import {superValidate} from "sveltekit-superforms/server";
 
 
 export const load = (async ({ locals: { supabase, authCheck }, params }) => {
-	const { conditional, returnError, user } = await authCheck();
+	const { conditional, returnError, session } = await authCheck();
 	if (!conditional) return returnError();
 	const form = await superValidate(CommentSchema);
 	const { data: posts, error: postErrors } = await supabase
@@ -32,17 +32,17 @@ export const load = (async ({ locals: { supabase, authCheck }, params }) => {
 	if (votesErrors) return { error: votesErrors.message };
 	const vote = votes.length;
 
-	return { post, comments, vote, user_id: user.user?.id, form };
+	return { post, comments, vote, user_id: session?.user?.id, form };
 }) satisfies PageServerLoad;
 
 export const actions : Actions = {
 	default: async ({ locals: { supabase, authCheck }, params, request }) => {
-		const { conditional, returnError, user } = await authCheck();
+		const { conditional, returnError, session } = await authCheck();
 		if (!conditional) return returnError();
 
 		const form = await request.json();
 		const { body } = form;
-		const {error } = await supabase.from('comment').insert({ body, user_id: user.user?.id, blog_id: params.id });
+		const {error } = await supabase.from('comment').insert({ body, user_id: session?.user?.id, blog_id: params.id });
 		if (error) return { error: error.message };
 	}
 };
