@@ -9,12 +9,20 @@ export const load = (async ({ locals: { supabase }, params }) => {
 		return { error: postErrors.message };
 	}
 	const post = posts[0];
+
 	const { data: comments, error: commentErrors } = await supabase
 		.from('comment')
 		.select('*')
 		.eq('blog_id', params.id);
-
 	if (commentErrors) return { error: commentErrors.message };
 
-	return { post, comments };
+	const { data: votes, error: votesErrors } = await supabase
+		.from('vote')
+		.select('blog_id')
+		.eq('blog_id', params.id);
+
+	if (votesErrors) return { error: votesErrors.message };
+	const vote = votes.length;
+
+	return { post, comments, vote };
 }) satisfies PageServerLoad;
