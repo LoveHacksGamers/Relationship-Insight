@@ -3,8 +3,9 @@ import type { PageServerLoad } from './$types';
 export const load = (async ({ locals: { supabase }, params }) => {
 	const { data: posts, error: postErrors } = await supabase
 		.from('blog')
-		.select('*')
+		.select('*, vote(id)')
 		.eq('id', params.id);
+
 	if (postErrors) {
 		return { error: postErrors.message };
 	}
