@@ -10,6 +10,7 @@
 
 <main class="center">
     <form class="flex flex-col card p-3" method="POST" use:enhance>
+      <h1>Log In</h1>
       <label class="py-2">
         Email:
         <input type="text" name="email" class="input p-1" placeholder="email@domain.com"

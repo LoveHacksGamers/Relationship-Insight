@@ -5,11 +5,15 @@
   import { getFlash } from 'sveltekit-flash-message';
   import { page } from '$app/stores';
 
+  export let data : LayoutData;
   const flash = getFlash(page);
 
   initializeStores();
 
   const toastStore = getToastStore();
+
+  let isLoggedIn = !!data.session;
+  console.log(isLoggedIn)
 
   $: if ($flash) {
     toastStore.trigger({
@@ -18,7 +22,6 @@
     })
   }
 
-  export let data : LayoutData;
 </script>
 
 <Toast />
@@ -28,7 +31,7 @@
       <svelte:fragment slot="lead"><a class="btn btn-ghost text-xl" href="/">Relationship Insight</a></svelte:fragment>
       <svelte:fragment slot="trail">
         <a class="btn btn-ghost" href="/blog">Blogs</a>
-        {#if !data.session}
+        {#if !isLoggedIn}
           <a class="btn btn-ghost" href="/login">Login</a>
           <a class="btn btn-ghost" href="/signup">Sign Up</a>
         {/if}

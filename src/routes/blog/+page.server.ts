@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ locals: { supabase } }) => {
+export const load = (async ({ locals: { supabase, authCheck } }) => {
 	const { data: posts, error: postErrors } = await supabase.from('blog').select('*, vote(id)');
 	console.log(posts)
 	if (postErrors) {
@@ -8,5 +8,5 @@ export const load = (async ({ locals: { supabase } }) => {
 		return { error: postErrors.message };
 	}
 
-	return { posts };
+	return { posts};
 }) satisfies PageServerLoad;

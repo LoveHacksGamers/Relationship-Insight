@@ -5,18 +5,16 @@ import {superValidate} from "sveltekit-superforms/server";
 
 
 export const load = (async ({ locals: { supabase, authCheck }, params }) => {
-	const { conditional, returnError, session } = await authCheck();
-	if (!conditional) return returnError();
+	const {session } = await authCheck();
 	const form = await superValidate(CommentSchema);
-	const { data: posts, error: postErrors } = await supabase
+	const { data: post, error: postErrors } = await supabase
 		.from('blog')
 		.select('*, vote(id)')
-		.eq('id', params.id);
+		.eq('id', params.id).single();
 
 	if (postErrors) {
 		return { error: postErrors.message };
 	}
-	const post = posts[0];
 
 	const { data: comments, error: commentErrors } = await supabase
 		.from('comment')
