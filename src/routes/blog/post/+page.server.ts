@@ -15,7 +15,7 @@ export const load = (async ({locals : {authCheck}}) => {
 export const actions : Actions = {
     default: async ({locals : {supabase, authCheck}, request, cookies}) => {
         const {conditional, session, returnError} = await authCheck();
-        if (!conditional) return returnError();
+        if (conditional) return returnError();
         const form = await superValidate(request, PostSchema);
         if (!form.valid) return {error : form.errors}
 
