@@ -14,13 +14,13 @@ export const load = (async ({locals : {authCheck}}) => {
 
 export const actions : Actions = {
     default: async ({locals : {supabase, authCheck}, request, cookies}) => {
-        const {conditional, user, returnError} = await authCheck();
+        const {conditional, session, returnError} = await authCheck();
         if (!conditional) return returnError();
         const form = await superValidate(request, PostSchema);
         if (!form.valid) return {error : form.errors}
 
         const {title, body} = form.data;
-        const {data : blog, error} = await supabase.from('blog').insert({title, body, user_id: user.user?.id})
+        const {data : blog, error} = await supabase.from('blog').insert({title, body, user_id: session?.user?.id})
         if (error) return {error : error.message}
         console.log(blog, error)
 
@@ -32,7 +32,5 @@ export const actions : Actions = {
             },
             cookies
         )
-
-        return {form}
     }
 }

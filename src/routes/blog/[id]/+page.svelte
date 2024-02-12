@@ -28,6 +28,7 @@
 
         {#each data.comments as comment}
             <p class="mb-2">{comment.body}</p>
+            <hr/>
         {/each}
     </div>
 </main>

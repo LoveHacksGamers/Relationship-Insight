@@ -22,25 +22,16 @@ export const load = (async ({ locals: { supabase, authCheck }, params }) => {
 		.eq('blog_id', params.id);
 	if (commentErrors) return { error: commentErrors.message };
 
-	const { data: votes, error: votesErrors } = await supabase
-		.from('vote')
-		.select('blog_id')
-		.eq('blog_id', params.id);
-
-	if (votesErrors) return { error: votesErrors.message };
-	const vote = votes.length;
-
-	return { post, comments, vote, user_id: session?.user?.id, form };
+	return { post, comments, session: session, form };
 }) satisfies PageServerLoad;
 
 export const actions : Actions = {
 	default: async ({ locals: { supabase, authCheck }, params, request }) => {
 		const { conditional, returnError, session } = await authCheck();
-		if (!conditional) return returnError();
+		if (conditional) return returnError();
 
-		const form = await request.json();
-		const { body } = form;
-		const {error } = await supabase.from('comment').insert({ body, user_id: session?.user?.id, blog_id: params.id });
+		const { data } = await superValidate(request, CommentSchema);
+		const {error } = await supabase.from('comment').insert({ body: data.body, user_id: session?.user?.id, blog_id: params.id });
 		if (error) return { error: error.message };
 	}
 };
