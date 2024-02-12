@@ -7,7 +7,7 @@ import {redirect} from "sveltekit-flash-message/server";
 export const load = (async ({locals : {authCheck}}) => {
     const form = await superValidate(PostSchema);
     const {conditional, returnError} = await authCheck();
-    if (!conditional) return returnError();
+    if (conditional) return returnError();
     return {form};
 }) satisfies PageServerLoad;
 
